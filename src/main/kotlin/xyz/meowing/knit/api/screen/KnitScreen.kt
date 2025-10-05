@@ -22,9 +22,9 @@ import org.lwjgl.input.Mouse
 //#endif
 
 @Suppress("UNUSED")
-abstract class KnitScreen
+abstract class KnitScreen(screenName: String = "Knit-Screen")
     //#if MC > 1.16.5
-    //$$ : Screen(Text.of(""))
+    //$$ : Screen(Text.of(screenName))
     //#elseif MC == 1.8.9
     : GuiScreen()
     //#endif
