@@ -1,0 +1,14 @@
+[
+    {
+        "modid": "${mod_id}",
+        "name": "${mod_name}",
+        "description": "A fork of OmniCore for Stellarium's mods.",
+        "version": "${mod_version}",
+        "mcversion": "${mc_version}",
+        "url": "https://github.com/StellariumMC/Knit/",
+        "updateUrl": "https://github.com/StellariumMC/Knit/",
+        "authorList": [
+            "Kiwi"
+        ]
+    }
+]

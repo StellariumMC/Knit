@@ -1,0 +1,22 @@
+{
+	"schemaVersion": 1,
+	"id": "${mod_id}",
+	"version": "${mod_version}",
+	"name": "Knit",
+	"description": "A fork of OmniCore for Stellarium's mods.",
+	"authors": [
+		"Aurielyn"
+	],
+	"contact": {
+      "homepage": "https://meowing.xyz/",
+      "sources": "https://github.com/StellariumMC/knit"
+	},
+	"license": "GPL-3.0-or-later",
+	"environment": "*",
+	"depends": {
+        "fabricloader": ">=0.15.11",
+        "minecraft": "~${minor_mc_version}",
+        "fabric-api": "*",
+        "fabric-language-kotlin": "*"
+	}
+}

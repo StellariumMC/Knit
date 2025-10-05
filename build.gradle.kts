@@ -22,17 +22,6 @@ toolkitMultiversion {
     moveBuildsToRootProject.set(true)
 }
 
-toolkitLoomHelper {
-    if (!mcData.isNeoForge) {
-        useMixinRefMap(modData.id)
-    }
-
-    if (mcData.isForge) {
-        useTweaker("org.spongepowered.asm.launch.MixinTweaker")
-        useForgeMixin(modData.id)
-    }
-}
-
 dependencies {
     if (mcData.isFabric) {
         modImplementation("net.fabricmc.fabric-api:fabric-api:${mcData.dependencies.fabric.fabricApiVersion}")
