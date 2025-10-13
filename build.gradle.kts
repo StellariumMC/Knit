@@ -27,8 +27,12 @@ dependencies {
         modImplementation("net.fabricmc.fabric-api:fabric-api:${mcData.dependencies.fabric.fabricApiVersion}")
         modImplementation("net.fabricmc:fabric-language-kotlin:${mcData.dependencies.fabric.fabricLanguageKotlinVersion}")
     } else if (mcData.version <= MinecraftVersions.VERSION_1_12_2) {
-        implementation(includeOrShade(kotlin("stdlib-jdk8"))!!)
+        implementation(kotlin("stdlib-jdk8"))
     }
+
+    implementation(kotlin("reflect"))
+
+    modApi(includeOrShade("com.mojang:brigadier:1.2.9")!!)
 }
 
 toolkitMavenPublishing {
