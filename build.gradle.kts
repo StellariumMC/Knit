@@ -18,6 +18,8 @@ repositories {
     maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
 }
 
+apply(rootProject.file("secrets.gradle.kts"))
+
 toolkitMultiversion {
     moveBuildsToRootProject.set(true)
 }
@@ -85,10 +87,20 @@ signing {
     sign(publishing.publications)
 }
 
-tasks.register<Zip>("sonatypeBundle") {
-    group = "publishing"
+val createBundle = tasks.register<Zip>("createBundle") {
     from(layout.buildDirectory.dir("central-bundle"))
-    archiveFileName.set("sonatype-bundle.zip")
+    archiveFileName.set("knit-$version")
     destinationDirectory.set(layout.buildDirectory)
     dependsOn("publishMavenJavaPublicationToBundleRepository")
+}
+
+tasks.register<Exec>("publishToSonatype") {
+    group = "publishing"
+    dependsOn(createBundle)
+    commandLine(
+        "curl", "-X", "POST",
+        "-u", "${findProperty("sonatype.username")}:${findProperty("sonatype.password")}",
+        "-F", "bundle=@${layout.buildDirectory.file("knit-$version").get().asFile.absolutePath}",
+        "https://central.sonatype.com/api/v1/publisher/upload"
+    )
 }
