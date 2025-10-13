@@ -95,6 +95,7 @@ val createBundle = tasks.register<Zip>("createBundle") {
 }
 
 tasks.register<Exec>("publishToSonatype") {
+    if (mcData.version == MinecraftVersions.VERSION_1_16_5) return@register
     group = "publishing"
     dependsOn(createBundle)
     commandLine(
