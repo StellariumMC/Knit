@@ -8,6 +8,9 @@ package xyz.meowing.knit.api.input
 import org.lwjgl.input.Keyboard
 //#endif
 
+/**
+ * @author: Deftu
+ */
 object KnitKeyboard {
     @JvmStatic
     val isShiftKeyPressed: Boolean

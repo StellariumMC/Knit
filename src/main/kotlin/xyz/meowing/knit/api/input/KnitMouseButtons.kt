@@ -15,6 +15,9 @@ package xyz.meowing.knit.api.input
 //$$     val BUTTON8: KnitMouseButton = KnitMouseButton(GLFW.GLFW_MOUSE_BUTTON_8)
 //$$ }
 //#else
+/**
+ * @author: Deftu
+ */
 object KnitMouseButtons {
     val LEFT: KnitMouseButton = KnitMouseButton(0)
     val RIGHT: KnitMouseButton = KnitMouseButton(1)

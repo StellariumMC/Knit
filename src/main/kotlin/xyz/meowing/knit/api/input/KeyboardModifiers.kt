@@ -5,6 +5,9 @@ package xyz.meowing.knit.api.input
 //$$ import org.lwjgl.glfw.GLFW
 //#endif
 
+/**
+ * @author: Deftu
+ */
 data class KeyboardModifiers(
     val isShift: Boolean,
     val isCtrl: Boolean,

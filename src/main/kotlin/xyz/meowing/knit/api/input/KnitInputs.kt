@@ -8,6 +8,9 @@ package xyz.meowing.knit.api.input
 import net.minecraft.client.settings.GameSettings
 //#endif
 
+/**
+ * @author: Deftu
+ */
 object KnitInputs {
     fun get(code: Int): KnitInputCode {
         return when {

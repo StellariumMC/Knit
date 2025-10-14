@@ -21,6 +21,9 @@ import org.lwjgl.input.Mouse
 //$$ import net.minecraft.client.gui.Click
 //#endif
 
+/**
+ * @author: Deftu
+ */
 @Suppress("UNUSED")
 abstract class KnitScreen(screenName: String = "Knit-Screen")
     //#if MC > 1.16.5

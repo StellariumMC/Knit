@@ -6,6 +6,9 @@ import net.minecraft.client.gui.GuiScreen
 //$$ import xyz.meowing.knit.Knit
 //#endif
 
+/**
+ * @author: Deftu
+ */
 object KnitClipboard {
     var string: String
         get() {

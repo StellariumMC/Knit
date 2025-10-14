@@ -12,6 +12,9 @@ import kotlin.math.max
 import org.lwjgl.input.Mouse
 //#endif
 
+/**
+ * @author: Deftu
+ */
 object KnitMouse {
     object Raw {
         inline val x: Double

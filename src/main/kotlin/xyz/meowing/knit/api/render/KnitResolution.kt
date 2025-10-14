@@ -8,6 +8,9 @@ import net.minecraft.client.gui.ScaledResolution
 private typealias ScreenResolution = ScaledResolution
 //#endif
 
+/**
+ * @author: Deftu
+ */
 object KnitResolution {
     object Window {
         val width: Int

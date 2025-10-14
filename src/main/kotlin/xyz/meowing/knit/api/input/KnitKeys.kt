@@ -137,6 +137,9 @@ package xyz.meowing.knit.api.input
 //#else
 import org.lwjgl.input.Keyboard
 
+/**
+ * @author: Deftu
+ */
 object KnitKeys {
     // --- Special / Unknown ---
     val KEY_NONE: KnitKey = KnitKey(Keyboard.KEY_NONE)
