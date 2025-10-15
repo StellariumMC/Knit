@@ -69,7 +69,6 @@ class ParserArgumentType<T>(
      * @return the value or null if it failed.
      */
     fun getValue(ctx: CommandContext<Any?>): T? = try {
-        println("${parameter.name} ${parameter.type}")
         ctx.getArgument(parameter.name, parameter.type)
     } catch (_: IllegalArgumentException) {
         null

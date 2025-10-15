@@ -1,9 +1,11 @@
 package xyz.meowing.knit.api
 
-import net.minecraft.client.gui.GuiScreen
+//#if MC != 1.16.5
 
-//#if MC <= 1.12.2
+//#if MC >= 1.16.5
 //$$ import xyz.meowing.knit.Knit
+//#else
+import net.minecraft.client.gui.GuiScreen
 //#endif
 
 /**
@@ -26,3 +28,4 @@ object KnitClipboard {
             //#endif
         }
 }
+//#endif

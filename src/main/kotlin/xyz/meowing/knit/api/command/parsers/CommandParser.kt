@@ -14,7 +14,6 @@ import xyz.meowing.knit.api.command.parsers.impl.StringParser
 import xyz.meowing.knit.api.command.utils.GreedyString
 import xyz.meowing.knit.api.command.utils.SyntaxException
 import java.util.*
-import kotlin.reflect.full.primaryConstructor
 
 /**
  * # CommandParser
@@ -84,7 +83,6 @@ interface CommandParser<T> {
 
             val annotation = type.getAnnotation(CommandParsable::class.java)
             if (annotation != null) {
-                println(type.isEnum)
                 if (type.isEnum) {
                     val parser = object : CommandParser<Any> {
                         val enumMap = buildMap<String, Any> {
@@ -100,8 +98,6 @@ interface CommandParser<T> {
                                 val value = enumMap[builder.toString()]
                                 if (value != null) return value
                             }
-                            // in modern versions it displays the available values,
-                            // so it is not needed to list values
                             throw SyntaxException(
                                 //#if MC == 1.8.9
                                 "Invalid argument (valid arguments: ${enumMap.keys.joinToString(separator = ", ") { it }}) for command"
@@ -121,13 +117,22 @@ interface CommandParser<T> {
                     )
                     return parser
                 } else {
-                    val primaryConstructor = type.kotlin.primaryConstructor ?: throw IllegalArgumentException()
-                    val parser = FunctionParser(primaryConstructor)
-                    registerParser(
-                        type as Class<Any?>,
-                        parser as CommandParser<Any?>
-                    )
-                    return parser
+                    try {
+                        val constructors = type.constructors
+                        if (constructors.isEmpty()) throw IllegalArgumentException("No constructor found")
+
+                        val constructor = constructors[0]
+                        val parser = FunctionParser { args: List<Any?> ->
+                            constructor.newInstance(*args.toTypedArray())
+                        }
+                        registerParser(
+                            type as Class<Any?>,
+                            parser as CommandParser<Any?>
+                        )
+                        return parser
+                    } catch (e: Exception) {
+                        throw IllegalArgumentException("Failed to create parser for $type", e)
+                    }
                 }
             }
             return null

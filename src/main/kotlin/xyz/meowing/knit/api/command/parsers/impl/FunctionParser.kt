@@ -26,22 +26,39 @@ import com.mojang.brigadier.StringReader
  *
  * @author Stivais
  */
-class FunctionParser<T>(
-    function: Function<T>
-) : CommandParser<T> {
-
-    /**
-     * [FunctionInvoker] which handles correctly invoking the function.
-     */
-    private val funInvoker = FunctionInvoker.from(function)
-
-    /**
-     * List of [command parsers][CommandParser] to handle safely inputting the correct values for the function.
-     */
+class FunctionParser<T> : CommandParser<T> {
+    private val funInvoker: FunctionInvoker<T>?
+    private val constructorInvoker: ((List<Any?>) -> T)?
     private val parsers: ArrayList<CommandParser<*>> = arrayListOf()
 
-    init {
-        for (parameter in funInvoker.parameters) {
+    constructor(function: Function<T>, vararg parameterTypes: Class<*>) {
+        funInvoker = if (parameterTypes.isEmpty()) {
+            FunctionInvoker.from(function)
+        } else {
+            FunctionInvoker.from(function, *parameterTypes)
+        }
+        constructorInvoker = null
+        initParsers()
+    }
+
+    constructor(invoker: (List<Any?>) -> T) {
+        funInvoker = null
+        constructorInvoker = invoker
+
+        val constructor = invoker.javaClass.enclosingClass?.constructors?.firstOrNull()
+            ?: throw IllegalStateException("Cannot find constructor")
+
+        for (param in constructor.parameters) {
+            val parser = getParser(param.type)
+                ?: throw IllegalStateException("No parser found for parameter: ${param.name}(type=${param.type})")
+            parsers.add(parser)
+        }
+
+        require(parsers.isNotEmpty()) { "You need at least one parameter in the function for this parser." }
+    }
+
+    private fun initParsers() {
+        for (parameter in funInvoker!!.parameters) {
             val parser = getParser(parameter.type)
                 ?: throw IllegalStateException("No parser found for parameter: ${parameter.name}(type=${parameter.type})")
             parsers.add(parser)
@@ -55,6 +72,11 @@ class FunctionParser<T>(
             reader.skipWhitespace()
             arguments.add(parser.parse(reader))
         }
-        return funInvoker.invoke(arguments)
+
+        return if (funInvoker != null) {
+            funInvoker.invoke(arguments)
+        } else {
+            constructorInvoker!!(arguments)
+        }
     }
 }

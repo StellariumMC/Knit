@@ -32,8 +32,6 @@ dependencies {
         implementation(kotlin("stdlib-jdk8"))
     }
 
-    implementation(kotlin("reflect"))
-
     modApi(includeOrShade("com.mojang:brigadier:1.2.9")!!)
 }
 

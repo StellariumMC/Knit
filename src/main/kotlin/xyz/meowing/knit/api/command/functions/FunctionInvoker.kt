@@ -2,18 +2,13 @@ package xyz.meowing.knit.api.command.functions
 
 import java.lang.invoke.MethodHandle
 import java.lang.invoke.MethodHandles
-import kotlin.reflect.KClass
-import kotlin.reflect.KFunction
-import kotlin.reflect.jvm.ExperimentalReflectionOnLambdas
-import kotlin.reflect.jvm.reflect
 
 /**
  * # FunctionInvoker
- * 
- * Interface to simplify invoking functions, using Kotlin reflection.
- * 
+ *
+ * Interface to simplify invoking functions, using Java reflection.
+ *
  * @see LambdaInvoker
- * @see KFunctionInvoker
  * @author Stivais
  */
 sealed interface FunctionInvoker<T> {
@@ -31,32 +26,16 @@ sealed interface FunctionInvoker<T> {
     fun invoke(arguments: List<Any?>): T
 
     /**
-     * [FunctionInvoker] implementation, that takes a [KFunction].
-     *
-     * This implementation is primarily for named functions, or constructors.
-     *
-     * It is recommended to use [FunctionInvoker.from] instead of directly initializing this class.
-     */
-    class KFunctionInvoker<T> internal constructor(private val kFun: KFunction<T>) : FunctionInvoker<T> {
-
-        override val parameters: List<Parameter<*>> = kFun.parameters.map {
-            Parameter(it.name.toString(), (it.type.classifier as KClass<*>).java, it.type.isMarkedNullable)
-        }
-
-        override fun invoke(arguments: List<Any?>): T {
-            return kFun.call(*arguments.toTypedArray())
-        }
-    }
-
-    /**
      * [FunctionInvoker] implementation, that is used for anonymous [functions][Function], like lambdas.
      *
      * This class uses [MethodHandle] to invoke the function.
      *
      * It is recommended to use [FunctionInvoker.from] instead of directly initializing this class.
      */
-    class LambdaInvoker<T> internal constructor(lambda: Function<T>) : FunctionInvoker<T> {
-
+    class LambdaInvoker<T> internal constructor(
+        lambda: Function<T>,
+        parameterTypes: Array<out Class<*>>
+    ) : FunctionInvoker<T> {
         override val parameters: List<Parameter<*>>
 
         /**
@@ -66,23 +45,30 @@ sealed interface FunctionInvoker<T> {
 
         init {
             try {
-                // IMPORTANT!!!
-                // due to how k2 compiles lambdas,
-                // for this to work you need to use @JvmSerializableLambda,
-                // or add "-Xlambdas=class" to freeCompilerArgs.
-                val method = lambda.javaClass.declaredMethods[1]
-                if (!method.isAccessible) method.isAccessible = true
-                mHandle = MethodHandles.lookup().unreflect(method).bindTo(lambda)
+                val lambdaClass = lambda.javaClass
 
-                @OptIn(ExperimentalReflectionOnLambdas::class)
-                val kFun = lambda.reflect() ?: throw Throwable("[Knit-Commodore] Failed to reflect function.")
+                val invokeMethod = lambdaClass.declaredMethods.firstOrNull { method ->
+                    !method.isSynthetic &&
+                            !method.isBridge &&
+                            method.name != "equals" &&
+                            method.name != "hashCode" &&
+                            method.name != "toString"
+                } ?: throw IllegalStateException("No invoke method found in lambda")
 
-                parameters = kFun.parameters.map {
-                    Parameter(it.name.toString(), (it.type.classifier as KClass<*>).java, it.type.isMarkedNullable)
+                if (!invokeMethod.isAccessible) invokeMethod.isAccessible = true
+                mHandle = MethodHandles.lookup().unreflect(invokeMethod).bindTo(lambda)
+
+                if (parameterTypes.isEmpty()) {
+                    parameters = invokeMethod.parameterTypes.mapIndexed { index, type ->
+                        Parameter("param$index", type, false)
+                    }
+                } else {
+                    parameters = parameterTypes.mapIndexed { index, type ->
+                        Parameter("param$index", type, false)
+                    }
                 }
             } catch (e: Exception) {
                 throw Exception("[Knit-Commodore] Error creating Function Invoker.", e)
-                e.printStackTrace()
             }
         }
 
@@ -94,13 +80,11 @@ sealed interface FunctionInvoker<T> {
 
     companion object {
         /**
-         * Interprets if a function is an anonymous function/lambda, or an actual function and returns a suitable invoker.
+         * Creates a function invoker with explicit parameter types.
+         * If no parameter types are provided, will attempt to extract them from the lambda's method signature.
          */
-        fun <T> from(function: Function<T>): FunctionInvoker<T> {
-            return when (function) {
-                is KFunction<T> -> KFunctionInvoker(function)
-                else -> LambdaInvoker(function)
-            }
+        fun <T> from(function: Function<T>, vararg parameterTypes: Class<*>): FunctionInvoker<T> {
+            return LambdaInvoker(function, parameterTypes)
         }
     }
 }
