@@ -1,7 +1,7 @@
 package xyz.meowing.knit.api.render
 
 //#if MC != 1.16.5
-import xyz.meowing.knit.Knit.client
+import xyz.meowing.knit.api.KnitClient.client
 
 //#if MC == 1.8.9
 import net.minecraft.client.gui.ScaledResolution

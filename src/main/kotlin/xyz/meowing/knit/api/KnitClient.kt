@@ -1,5 +1,6 @@
 package xyz.meowing.knit.api
 
+//#if MC != 1.16.5
 //#if MC >= 1.20.1
 //$$ import net.minecraft.client.MinecraftClient
 //$$ import net.minecraft.client.world.ClientWorld
@@ -29,3 +30,4 @@ object KnitClient {
     val player: EntityPlayerSP? get() = KnitPlayer.player
     //#endif
 }
+//#endif

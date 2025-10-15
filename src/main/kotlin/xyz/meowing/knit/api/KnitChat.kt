@@ -1,6 +1,7 @@
 package xyz.meowing.knit.api
 
-import xyz.meowing.knit.Knit.client
+//#if MC != 1.16.5
+import xyz.meowing.knit.api.KnitClient.client
 import xyz.meowing.knit.api.KnitPlayer.player
 import kotlin.math.roundToInt
 
@@ -85,3 +86,4 @@ object KnitChat {
         return " ".repeat(padding) + text
     }
 }
+//#endif

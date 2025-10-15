@@ -17,7 +17,7 @@ import org.lwjgl.input.Mouse
  */
 object KnitMouse {
     object Raw {
-        inline val x: Double
+        val x: Double
             get() {
                 //#if MC >= 1.14
                 //$$ return client.mouse.x
@@ -26,7 +26,7 @@ object KnitMouse {
                 //#endif
             }
 
-        inline val y: Double
+        val y: Double
             get() {
                 //#if MC >= 1.14
                 //$$ return client.mouse.y
@@ -37,9 +37,9 @@ object KnitMouse {
     }
 
     object Scaled {
-        inline val x: Double
+        val x: Double
             get() = Raw.x * KnitResolution.scaledWidth / max(1, KnitResolution.windowWidth)
-        inline val y: Double
+        val y: Double
             get() = Raw.y * KnitResolution.scaledWidth / max(1, KnitResolution.windowWidth)
     }
 
