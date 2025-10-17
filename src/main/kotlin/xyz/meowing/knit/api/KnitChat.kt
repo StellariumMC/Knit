@@ -23,7 +23,7 @@ object KnitChat {
 
     fun sendCommand(command: String) {
         //#if MC >= 1.20.1
-        //$$ player.networkHandler?.sendChatCommand(command)
+        //$$ player?.networkHandler?.sendChatCommand(command)
         //#else
         player?.sendChatMessage("/" + command.removePrefix("/"))
         //#endif

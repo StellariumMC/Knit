@@ -1,0 +1,1 @@
+This implementation of KnitText is heavily inspired by Deftu's OmniCore and Textile library, all the credit for any code that is from their library belongs to Deftu and the contributors of the libraries (OmniCore, Textile).
