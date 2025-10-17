@@ -2,6 +2,10 @@ package xyz.meowing.knit.api.text.internal
 
 //#if MC != 1.16.5
 
+import xyz.meowing.knit.api.text.core.ClickEvent
+import xyz.meowing.knit.api.text.core.HoverEvent
+import xyz.meowing.knit.api.text.core.ColorCodes
+
 //#if MC >= 1.20.1
 //$$ import net.minecraft.text.Text as VanillaText
 //$$ import net.minecraft.text.ClickEvent as ModernClickEvent
@@ -11,9 +15,6 @@ package xyz.meowing.knit.api.text.internal
 //#else
 import net.minecraft.util.ChatComponentText
 import net.minecraft.util.IChatComponent
-import xyz.meowing.knit.api.text.core.ClickEvent
-import xyz.meowing.knit.api.text.core.HoverEvent
-import xyz.meowing.knit.api.text.core.ColorCodes
 import net.minecraft.event.ClickEvent as VanillaClickEvent
 import net.minecraft.event.HoverEvent as VanillaHoverEvent
 //#endif
@@ -202,12 +203,7 @@ class TextBuilder internal constructor(
         vanilla?.let { return it }
 
         //#if MC >= 1.20.1
-        //$$ val base = if (isTranslatable) {
-        //$$     VanillaText.translatable(text, *translationArgs!!)
-        //$$ } else {
-        //$$     VanillaText.literal(text)
-        //$$ }
-        //$$
+        //$$ val base = VanillaText.literal(text)
         //$$ var style = base.style
         //$$ color?.let {
         //#if MC >= 1.21.5

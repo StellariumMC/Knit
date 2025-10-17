@@ -1,8 +1,8 @@
 package xyz.meowing.knit.api.text.core
 
-import xyz.meowing.knit.api.text.internal.TextBuilder
-
 //#if MC != 1.16.5
+
+import xyz.meowing.knit.api.text.internal.TextBuilder
 
 //#if MC >= 1.20.1
 //$$ import net.minecraft.item.ItemStack

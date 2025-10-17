@@ -1,12 +1,10 @@
 package xyz.meowing.knit.api.text.internal
 
-//#if MC != 1.16.5
-
+//#if MC < 1.20.1 && MC != 1.16.5
 import net.minecraft.util.EnumChatFormatting
 import xyz.meowing.knit.api.text.core.ColorCodes
 import kotlin.math.sqrt
 
-//#if MC < 1.20.1
 object ColorMapper {
     private data class ColorEntry(val name: String, val value: Int, val formatting: Any)
 
@@ -55,6 +53,4 @@ object ColorMapper {
         return nearest
     }
 }
-//#endif
-
 //#endif

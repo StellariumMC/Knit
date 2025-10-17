@@ -3,13 +3,13 @@ package xyz.meowing.knit.api.text
 //#if MC != 1.16.5
 
 import xyz.meowing.knit.api.text.internal.ChainBuilder
+import xyz.meowing.knit.api.text.internal.TextBuilder
+import xyz.meowing.knit.api.text.core.FormattingCodes
 
 //#if MC >= 1.20.1
 //$$ import net.minecraft.text.Text as VanillaText
 //#else
 import net.minecraft.util.IChatComponent
-import xyz.meowing.knit.api.text.core.FormattingCodes
-import xyz.meowing.knit.api.text.internal.TextBuilder
 //#endif
 
 object KnitText {
