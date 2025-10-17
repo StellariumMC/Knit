@@ -3,6 +3,9 @@ package xyz.meowing.knit.api.utils
 import java.util.*
 import kotlin.math.*
 
+/*
+ * Some of the methods have been authored by Noamm9
+ */
 object NumberUtils {
     private val suffixes = TreeMap<Long, String>().apply {
         this[1000L] = "k"
@@ -151,29 +154,6 @@ object NumberUtils {
             3L -> "${this}rd"
             else -> "${this}th"
         }
-    }
-
-    fun String.romanToDecimal(): Int {
-        var decimal = 0
-        var lastNumber = 0
-        val romanNumeral = this.uppercase()
-
-        for (x in romanNumeral.length - 1 downTo 0) {
-            val currentValue = when (romanNumeral[x]) {
-                'M' -> 1000
-                'D' -> 500
-                'C' -> 100
-                'L' -> 50
-                'X' -> 10
-                'V' -> 5
-                'I' -> 1
-                else -> 0
-            }
-            decimal += if (currentValue < lastNumber) -currentValue else currentValue
-            lastNumber = currentValue
-        }
-
-        return decimal
     }
 
     fun Number.toRoman(): String {
