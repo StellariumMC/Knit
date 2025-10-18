@@ -15,4 +15,5 @@
 ![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.7-neoforge?label=Knit%201.21.7%20NeoForge)
 
 ![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.9-fabric?label=Knit%201.21.9%20Fabric)
+![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.9-forge?label=Knit%201.21.9%20Forge)
 ![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.9-neoforge?label=Knit%201.21.9%20NeoForge)
