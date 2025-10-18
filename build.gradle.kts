@@ -14,10 +14,6 @@ plugins {
     id("dev.deftu.gradle.tools.publishing.maven")
 }
 
-repositories {
-    maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
-}
-
 apply(rootProject.file("secrets.gradle.kts"))
 
 toolkitMultiversion {
@@ -25,12 +21,14 @@ toolkitMultiversion {
 }
 
 dependencies {
+    implementation(kotlin("stdlib-jdk8"))
+
     if (mcData.isFabric) {
         modImplementation("net.fabricmc.fabric-api:fabric-api:${mcData.dependencies.fabric.fabricApiVersion}")
         modImplementation("net.fabricmc:fabric-language-kotlin:${mcData.dependencies.fabric.fabricLanguageKotlinVersion}")
-    } else if (mcData.version <= MinecraftVersions.VERSION_1_12_2) {
-        implementation(kotlin("stdlib-jdk8"))
     }
+
+    if (mcData.version <= MinecraftVersions.VERSION_1_12_2 && mcData.isForge) includeOrShade(kotlin("stdlib-jdk8"))
 
     modApi(includeOrShade("com.mojang:brigadier:1.2.9")!!)
 }
@@ -100,6 +98,6 @@ tasks.register<Exec>("publishToSonatype") {
         "curl", "-X", "POST",
         "-u", "${findProperty("sonatype.username")}:${findProperty("sonatype.password")}",
         "-F", "bundle=@${layout.buildDirectory.file("knit-$version").get().asFile.absolutePath}",
-        "https://central.sonatype.com/api/v1/publisher/upload"
+        "https://central.sonatype.com/api/v1/publisher/upload?publishingType=AUTOMATIC"
     )
 }
