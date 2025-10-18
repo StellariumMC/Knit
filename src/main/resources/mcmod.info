@@ -7,8 +7,6 @@
         "mcversion": "${mc_version}",
         "url": "https://github.com/StellariumMC/Knit/",
         "updateUrl": "https://github.com/StellariumMC/Knit/",
-        "authorList": [
-            "Kiwi"
-        ]
+        "authorList": ["Aurielyn"]
     }
 ]

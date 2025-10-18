@@ -7,7 +7,11 @@ import xyz.meowing.knit.api.text.core.HoverEvent
 import xyz.meowing.knit.api.text.core.ColorCodes
 
 //#if MC >= 1.20.1
-//$$ import net.minecraft.text.Text as VanillaText
+    //#if FORGE-LIKE
+    //$$ import net.minecraft.network.chat.Component as VanillaText
+    //#else
+    //$$ import net.minecraft.text.Text as VanillaText
+    //#endif
 //$$ import net.minecraft.text.ClickEvent as ModernClickEvent
 //$$ import net.minecraft.text.HoverEvent as ModernHoverEvent
 //$$ import net.minecraft.text.Style
@@ -20,7 +24,11 @@ import net.minecraft.event.HoverEvent as VanillaHoverEvent
 //#endif
 
 //#if MC >= 1.21.5
-//$$ import net.minecraft.text.TextColor
+    //#if FORGE-LIKE
+    //$$ import net.minecraft.network.chat.TextColor
+    //#else
+    //$$ import net.minecraft.text.TextColor
+    //#endif
 //#endif
 
 import java.net.URI

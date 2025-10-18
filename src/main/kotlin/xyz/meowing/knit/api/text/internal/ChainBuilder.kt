@@ -5,7 +5,11 @@ package xyz.meowing.knit.api.text.internal
 import xyz.meowing.knit.api.text.KnitText
 
 //#if MC >= 1.20.1
-//$$ import net.minecraft.text.Text as VanillaText
+    //#if FORGE-LIKE
+    //$$ import net.minecraft.network.chat.Component as VanillaText
+    //#else
+    //$$ import net.minecraft.text.Text as VanillaText
+    //#endif
 //#else
 import net.minecraft.util.IChatComponent
 //#endif
@@ -42,13 +46,11 @@ class ChainBuilder {
         return result
     }
 
-    fun toVanilla():
     //#if MC >= 1.20.1
-    //$$ VanillaText
+    //$$ fun toVanilla(): VanillaText {
     //#else
-            IChatComponent
+    fun toVanilla(): IChatComponent {
     //#endif
-    {
         return build().toVanilla()
     }
 }

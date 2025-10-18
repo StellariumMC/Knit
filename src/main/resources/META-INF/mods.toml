@@ -1,0 +1,25 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+issueTrackerURL="https://github.com/StellariumMC/knit/issues"
+license="GPL-3.0-or-later"
+
+[[mods]]
+modId="knit"
+version="${mod_version}"
+displayName="${mod_name}"
+description="A fork of OmniCore for Stellarium's mods."
+authors="Aurielyn"
+
+[[dependencies.knit]]
+modId="forge"
+mandatory=true
+versionRange="[31,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.knit]]
+modId="minecraft"
+mandatory=true
+versionRange="[${minor_mc_version},)"
+ordering="NONE"
+side="BOTH"

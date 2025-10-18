@@ -1,7 +1,9 @@
 package xyz.meowing.knit.api.screen
 
 //#if MC != 1.16.5
+
 import xyz.meowing.knit.api.input.KnitMouse
+
 //#if MC == 1.8.9
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiScreen
@@ -9,25 +11,39 @@ import org.lwjgl.input.Mouse
 //#endif
 
 //#if MC >= 1.20.1
+//#if FORGE-LIKE
+//$$ import net.minecraft.network.chat.Component
+//$$ import net.minecraft.client.gui.screens.Screen
+//$$ import net.minecraft.client.gui.GuiGraphics
+//$$ import net.minecraft.client.Minecraft
+//#else
 //$$ import net.minecraft.text.Text
 //$$ import net.minecraft.client.gui.screen.Screen
 //$$ import net.minecraft.client.gui.DrawContext
 //$$ import net.minecraft.client.MinecraftClient
 //#endif
+//#endif
 
 //#if MC >= 1.21.9
+//#if FORGE-LIKE
+//$$ import net.minecraft.client.input.KeyEvent
+//$$ import net.minecraft.client.input.CharacterEvent
+//$$ import net.minecraft.client.input.MouseButtonEvent
+//#else
 //$$ import net.minecraft.client.input.KeyInput
 //$$ import net.minecraft.client.input.CharInput
 //$$ import net.minecraft.client.gui.Click
 //#endif
+//#endif
 
-/**
- * @author: Deftu
- */
 @Suppress("UNUSED")
 abstract class KnitScreen(screenName: String = "Knit-Screen")
     //#if MC > 1.16.5
-    //$$ : Screen(Text.of(screenName))
+    //#if FORGE-LIKE
+    //$$ : Screen(Component.literal(screenName))
+    //#else
+    //$$ : Screen(Text.literal(screenName))
+    //#endif
     //#elseif MC == 1.8.9
     : GuiScreen()
     //#endif
@@ -66,7 +82,11 @@ abstract class KnitScreen(screenName: String = "Knit-Screen")
     //#endif
 
     //#if MC >= 1.20.1
+    //#if FORGE-LIKE
+    //$$ override fun render(arg: GuiGraphics, i: Int, j: Int, f: Float) {
+    //#else
     //$$ override fun render(context: DrawContext?, mouseX: Int, mouseY: Int, deltaTicks: Float) {
+    //#endif
     //#elseif MC == 1.8.9
     override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
     //#endif
@@ -80,7 +100,11 @@ abstract class KnitScreen(screenName: String = "Knit-Screen")
     }
 
     //#if MC >= 1.21.9
-    //$$ override fun mouseClicked(click: Click?, doubled: Boolean): Boolean {
+        //#if FORGE-LIKE
+        //$$ override fun mouseClicked(click: MouseButtonEvent, doubled: Boolean): Boolean {
+        //#else
+        //$$ override fun mouseClicked(click: Click?, doubled: Boolean): Boolean {
+        //#endif
     //$$     if (click == null) return super.mouseClicked(click, doubled)
     //$$     onMouseClick(click.x.toInt(), click.y.toInt(), click.button())
     //$$     return super.mouseClicked(click, doubled)
@@ -98,9 +122,13 @@ abstract class KnitScreen(screenName: String = "Knit-Screen")
     //#endif
 
     //#if MC >= 1.21.9
-    //$$ override fun mouseReleased(click: Click?): Boolean {
+        //#if FORGE-LIKE
+        //$$ override fun mouseReleased(click: MouseButtonEvent): Boolean {
+        //#else
+        //$$ override fun mouseReleased(click: Click?): Boolean {
+        //#endif
     //$$     if (click == null) return super.mouseReleased(click)
-    //$$     onMouseClick(click.x.toInt(), click.y.toInt(), click.button())
+    //$$     onMouseRelease(click.x.toInt(), click.y.toInt(), click.button())
     //$$     return super.mouseReleased(click)
     //$$ }
     //#elseif MC >= 1.20.1
@@ -116,13 +144,21 @@ abstract class KnitScreen(screenName: String = "Knit-Screen")
     //#endif
 
     //#if MC >= 1.21.9
-    //$$ override fun keyPressed(input: KeyInput?): Boolean {
+        //#if FORGE-LIKE
+        //$$ override fun keyPressed(input: KeyEvent): Boolean {
+        //#else
+        //$$ override fun keyPressed(input: KeyInput?): Boolean {
+        //#endif
     //$$     if (input == null) return super.keyPressed(input)
-    //$$     onKeyType('\u0000', input.keycode, input.scancode)
+    //$$     onKeyType('\u0000', input.key, input.scancode)
     //$$     return super.keyPressed(input)
     //$$ }
     //$$
-    //$$ override fun charTyped(input: CharInput?): Boolean {
+        //#if FORGE-LIKE
+        //$$ override fun charTyped(input: CharacterEvent): Boolean {
+        //#else
+        //$$ override fun charTyped(input: CharInput?): Boolean {
+        //#endif
     //$$     if (input == null) return super.charTyped(input)
     //$$     onKeyType(input.codepoint.toChar(), 0, 0)
     //$$     return super.charTyped(input)
@@ -167,10 +203,17 @@ abstract class KnitScreen(screenName: String = "Knit-Screen")
     //#endif
 
     //#if MC >= 1.20.1
+    //#if FORGE-LIKE
+    //$$ override fun onClose() {
+    //$$    onCloseGui()
+    //$$    super.onClose()
+    //$$ }
+    //#else
     //$$ override fun close() {
     //$$     onCloseGui()
     //$$     super.close()
     //$$ }
+    //#endif
     //#elseif MC == 1.8.9
     override fun onGuiClosed() {
         onCloseGui()
@@ -179,7 +222,11 @@ abstract class KnitScreen(screenName: String = "Knit-Screen")
     //#endif
 
     //#if MC >= 1.20.1
+    //#if FORGE-LIKE
+    //$$ override fun resize(client: Minecraft, width: Int, height: Int) {
+    //#else
     //$$ override fun resize(client: MinecraftClient?, width: Int, height: Int) {
+    //#endif
     //$$     onResizeGui()
     //$$     super.resize(client, width, height)
     //$$ }

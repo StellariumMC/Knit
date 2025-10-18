@@ -15,14 +15,14 @@ object KnitClipboard {
     var string: String
         get() {
             //#if MC >= 1.16.5
-            //$$ return Knit.client.keyboard.clipboard
+            //$$ return KnitClient.client.keyboard.clipboard
             //#else
             return GuiScreen.getClipboardString()
             //#endif
         }
         set(value) {
             //#if MC >= 1.16.5
-            //$$ Knit.client.keyboard.clipboard = value
+            //$$ KnitClient.client.keyboard.clipboard = value
             //#else
             GuiScreen.setClipboardString(value)
             //#endif

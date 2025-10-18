@@ -7,7 +7,7 @@ import kotlin.math.max
 //#if MC >= 1.16.5
 //$$ import xyz.meowing.knit.api.render.KnitResolution.windowHandle
 //$$ import org.lwjgl.glfw.GLFW
-//$$ import xyz.meowing.knit.Knit.client
+//$$ import xyz.meowing.knit.api.KnitClient.client
 //#elseif MC <= 1.12.2
 import org.lwjgl.input.Mouse
 //#endif

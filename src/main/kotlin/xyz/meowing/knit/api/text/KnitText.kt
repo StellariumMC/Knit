@@ -7,7 +7,11 @@ import xyz.meowing.knit.api.text.internal.TextBuilder
 import xyz.meowing.knit.api.text.core.FormattingCodes
 
 //#if MC >= 1.20.1
-//$$ import net.minecraft.text.Text as VanillaText
+    //#if FORGE-LIKE
+    //$$ import net.minecraft.network.chat.Component as VanillaText
+    //#else
+    //$$ import net.minecraft.text.Text as VanillaText
+    //#endif
 //#else
 import net.minecraft.util.IChatComponent
 //#endif
