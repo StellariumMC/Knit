@@ -57,7 +57,15 @@ abstract class KnitScreen(screenName: String = "Knit-Screen")
 
     open fun onResizeGui() {}
 
-    open fun onRender() {}
+    //#if MC >= 1.20.1
+    //#if FORGE-LIKE
+    //$$ open fun onRender(context: GuiGraphics, mouseX: Int, mouseY: Int, deltaTicks: Float) {}
+    //#else
+    //$$ open fun onRender(context: DrawContext?, mouseX: Int, mouseY: Int, deltaTicks: Float) {}
+    //#endif
+    //#else
+    open fun onRender(mouseX: Int, mouseY: Int, deltaTicks: Float) {}
+    //#endif
 
     open fun onMouseClick(mouseX: Int, mouseY: Int, button: Int) {}
 
@@ -65,7 +73,7 @@ abstract class KnitScreen(screenName: String = "Knit-Screen")
 
     open fun onMouseScroll(horizontal: Double, vertical: Double) {}
 
-    open fun onMouseMove() {}
+    open fun onMouseMove(mouseX: Int, mouseY: Int) {}
 
     open fun onKeyType(typedChar: Char, keyCode: Int, scanCode: Int) {}
 
@@ -83,19 +91,23 @@ abstract class KnitScreen(screenName: String = "Knit-Screen")
 
     //#if MC >= 1.20.1
     //#if FORGE-LIKE
-    //$$ override fun render(arg: GuiGraphics, i: Int, j: Int, f: Float) {
+    //$$ override fun render(context: GuiGraphics, mouseX: Int, mouseY: Int, deltaTicks: Float) {
+    //$$    onRender(context, mouseX, mouseY, deltaTicks)
     //#else
     //$$ override fun render(context: DrawContext?, mouseX: Int, mouseY: Int, deltaTicks: Float) {
+    //$$    onRender(context, mouseX, mouseY, deltaTicks)
     //#endif
     //#elseif MC == 1.8.9
-    override fun drawScreen(mouseX: Int, mouseY: Int, partialTicks: Float) {
+    override fun drawScreen(mouseX: Int, mouseY: Int, deltaTicks: Float) {
+        onRender(mouseX, mouseY, deltaTicks)
     //#endif
-        onRender()
 
-        if (KnitMouse.Raw.y != lastX || KnitMouse.Raw.x != lastY) {
-            onMouseMove()
-            lastX = KnitMouse.Raw.x
-            lastY = KnitMouse.Raw.y
+        val newX = KnitMouse.Raw.x
+        val newY = KnitMouse.Raw.y
+        if (newX != lastX || newY != lastY) {
+            onMouseMove(newX.toInt(), newY.toInt())
+            lastX = newX
+            lastY = newY
         }
     }
 
@@ -231,7 +243,7 @@ abstract class KnitScreen(screenName: String = "Knit-Screen")
     //$$     super.resize(client, width, height)
     //$$ }
     //#elseif MC == 1.8.9
-    override fun onResize(mcIn: Minecraft?, w: Int, h: Int) {
+    override fun onResize(mcIn: Minecraft, w: Int, h: Int) {
         onResizeGui()
         super.onResize(mcIn, w, h)
     }
