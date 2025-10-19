@@ -3,6 +3,7 @@ package xyz.meowing.knit.api
 //#if MC != 1.16.5
 
 import java.nio.file.Path
+import xyz.meowing.knit.api.loader.KnitLoader
 
 //#if MC >= 1.20.1
 //$$ import net.minecraft.client.MinecraftClient
@@ -50,9 +51,27 @@ object KnitClient {
     val player: EntityPlayerSP? get() = KnitPlayer.player
     //#endif
 
+    val isFabric: Boolean get() = KnitLoader.isFabric
+
+    val isForge: Boolean get() = KnitLoader.isForge
+
+    val isNeoForge: Boolean get() = KnitLoader.isNeoForge
+
     val minecraftVersion: String by lazy {
         //#if MC >= 1.16.5
-        //$$ SharedConstants.getGameVersion().name()
+            //#if FORGE-LIKE
+                //#if MC >= 1.21.7
+                //$$ SharedConstants.getCurrentVersion().name()
+                //#else
+                //$$ SharedConstants.getCurrentVersion().name
+                //#endif
+            //#elseif FABRIC
+                //#if MC >= 1.21.7
+                //$$ SharedConstants.getGameVersion().name()
+                //#else
+                //$$ SharedConstants.getGameVersion().name
+                //#endif
+            //#endif
         //#else
         ForgeVersion.mcVersion
         //#endif
