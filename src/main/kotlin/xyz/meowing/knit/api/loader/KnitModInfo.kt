@@ -26,7 +26,7 @@ data class KnitModInfo(
     val id: String,
     val name: String,
     val version: String,
-    val container: Optional<out ModContainer>,
+    val container: Optional<out ModContainer> = KnitLoader.findContainer(id),
     val mcVersion: String = KnitClient.minecraftVersion
 ) {
     companion object {

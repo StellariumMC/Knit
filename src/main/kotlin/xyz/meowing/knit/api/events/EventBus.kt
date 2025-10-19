@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap
 /**
  * Implementation inspired by DocilElm's impl
  */
-object EventBus {
+class EventBus {
     val listeners = ConcurrentHashMap<Class<*>, MutableSet<PrioritizedCallback<*>>>()
     data class PrioritizedCallback<T>(val priority: Int, val callback: (T) -> Unit)
 
@@ -22,7 +22,6 @@ object EventBus {
         return EventCallImpl(prioritizedCallback, handlers)
     }
 
-    @JvmStatic
     fun <T : Event> registerJava(
         eventClass: Class<T>,
         priority: Int = 0,
