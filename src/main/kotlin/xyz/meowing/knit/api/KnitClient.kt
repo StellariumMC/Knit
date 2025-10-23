@@ -1,106 +1,74 @@
 package xyz.meowing.knit.api
 
-//#if MC != 1.16.5
+import net.minecraft.client.MinecraftClient
+import net.minecraft.client.world.ClientWorld
+import net.minecraft.client.network.ClientPlayerEntity
+import net.minecraft.SharedConstants
 
 import java.nio.file.Path
 import xyz.meowing.knit.api.loader.KnitLoader
 
-//#if MC >= 1.20.1
-//$$ import net.minecraft.client.MinecraftClient
-//$$ import net.minecraft.client.world.ClientWorld
-//$$ import net.minecraft.client.network.ClientPlayerEntity
-//$$ import net.minecraft.SharedConstants
-//#else
-import net.minecraft.client.Minecraft
-import net.minecraft.world.World
-import net.minecraft.client.entity.EntityPlayerSP
-import net.minecraftforge.common.ForgeVersion
-//#endif
-
 //#if FABRIC
-//$$ import net.fabricmc.loader.api.FabricLoader
+import net.fabricmc.loader.api.FabricLoader
+//#elseif FORGE
+    //$$ import net.minecraftforge.fml.loading.FMLPaths
 //#else
-    //#if MC >= 1.16.5
-        //#if FORGE
-        //$$ import net.minecraftforge.fml.loading.FMLPaths
-        //#else
-        //$$ import net.neoforged.fml.loading.FMLPaths
-        //#endif
-    //#else
-        import net.minecraft.launchwrapper.Launch
-        import net.minecraftforge.fml.common.Loader
-    //#endif
+    //$$ import net.neoforged.fml.loading.FMLPaths
 //#endif
 
 object KnitClient {
-    //#if MC >= 1.20.1
-    //$$ val client: MinecraftClient = MinecraftClient.getInstance()
-    //#else
-    val client: Minecraft = Minecraft.getMinecraft()
-    //#endif
+    @JvmStatic
+    val client: MinecraftClient = MinecraftClient.getInstance()
 
-    //#if MC >= 1.20.1
-    //$$ val world: ClientWorld? get() = client.world
-    //#else
-    val world: World? get() = client.theWorld
-    //#endif
+    @JvmStatic
+    val world: ClientWorld? get() = client.world
 
-    //#if MC >= 1.20.1
-    //$$ val player: ClientPlayerEntity? get() = KnitPlayer.player
-    //#else
-    val player: EntityPlayerSP? get() = KnitPlayer.player
-    //#endif
+    @JvmStatic
+    val player: ClientPlayerEntity? get() = KnitPlayer.player
 
+    @JvmStatic
     val isFabric: Boolean get() = KnitLoader.isFabric
 
+    @JvmStatic
     val isForge: Boolean get() = KnitLoader.isForge
 
+    @JvmStatic
     val isNeoForge: Boolean get() = KnitLoader.isNeoForge
 
+    @JvmStatic
     val minecraftVersion: String by lazy {
-        //#if MC >= 1.16.5
-            //#if FORGE-LIKE
-                //#if MC >= 1.21.7
-                //$$ SharedConstants.getCurrentVersion().name()
-                //#else
-                //$$ SharedConstants.getCurrentVersion().name
-                //#endif
-            //#elseif FABRIC
-                //#if MC >= 1.21.7
-                //$$ SharedConstants.getGameVersion().name()
-                //#else
-                //$$ SharedConstants.getGameVersion().name
-                //#endif
+        //#if FORGE-LIKE
+            //#if MC >= 1.21.7
+            //$$ SharedConstants.getCurrentVersion().name()
+            //#else
+            //$$ SharedConstants.getCurrentVersion().name
             //#endif
-        //#else
-        ForgeVersion.mcVersion
+        //#elseif FABRIC
+            //#if MC >= 1.21.7
+            //$$ SharedConstants.getGameVersion().name()
+            //#else
+            SharedConstants.getGameVersion().name
+            //#endif
         //#endif
     }
 
-    val gameDir: Path
+    @JvmStatic
+    val gameDirectory: Path
         get() {
             //#if FABRIC
-            //$$ return FabricLoader.getInstance().gameDir
+            return FabricLoader.getInstance().gameDir
             //#else
-                //#if MC >= 1.15.2
-                //$$ return FMLPaths.GAMEDIR.get()
-                //#else
-                return Launch.minecraftHome.toPath()
-                //#endif
+            //$$ return FMLPaths.GAMEDIR.get()
             //#endif
         }
 
+    @JvmStatic
     val configDirectory: Path
         get() {
             //#if FABRIC
-            //$$ return FabricLoader.getInstance().configDir
+            return FabricLoader.getInstance().configDir
             //#else
-                //#if MC >= 1.15.2
-                //$$ return FMLPaths.CONFIGDIR.get()
-                //#else
-                return Loader.instance().configDir.toPath()
-                //#endif
+            //$$ return FMLPaths.CONFIGDIR.get()
             //#endif
         }
 }
-//#endif

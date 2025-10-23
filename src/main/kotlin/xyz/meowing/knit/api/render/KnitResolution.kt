@@ -1,12 +1,6 @@
 package xyz.meowing.knit.api.render
 
-//#if MC != 1.16.5
 import xyz.meowing.knit.api.KnitClient.client
-
-//#if MC == 1.8.9
-import net.minecraft.client.gui.ScaledResolution
-private typealias ScreenResolution = ScaledResolution
-//#endif
 
 /**
  * @author: Deftu
@@ -15,20 +9,12 @@ object KnitResolution {
     object Window {
         val width: Int
             get() {
-                //#if MC >= 1.16.5
-                //$$ return client.window.width
-                //#else
-                return client.displayWidth
-                //#endif
+                return client.window.width
             }
 
         val height: Int
             get() {
-                //#if MC >= 1.16.5
-                //$$ return client.window.height
-                //#else
-                return client.displayHeight
-                //#endif
+                return client.window.height
             }
     }
 
@@ -36,78 +22,33 @@ object KnitResolution {
     object Viewport {
         val width: Int
             get() {
-                //#if MC >= 1.16.5
-                //$$ return client.window.framebufferWidth
-                //#else
-                return client.displayWidth
-                //#endif
+                return client.window.framebufferWidth
             }
 
         val height: Int
             get() {
-                //#if MC >= 1.16.5
-                //$$ return client.window.framebufferHeight
-                //#else
-                return client.displayHeight
-                //#endif
+                return client.window.framebufferHeight
             }
     }
 
     object Scaled {
-        //#if MC == 1.8.9
-        private data class CachedScaledResolution(val width: Int, val height: Int, val scale: Int, val isUnicode: Boolean)
-
-        private var cachedScaledRes: CachedScaledResolution? = null
-        private var scaledRes: ScreenResolution? = null
-        //#endif
-
         val width: Int
             get() {
-                //#if MC >= 1.16.5
-                //$$ return client.window.scaledWidth
-                //#else
-                return getScaledRes().scaledWidth
-                //#endif
+                return client.window.scaledWidth
             }
 
         val height: Int
             get() {
-                //#if MC >= 1.16.5
-                //$$ return client.window.scaledHeight
-                //#else
-                return getScaledRes().scaledHeight
-                //#endif
+                return client.window.scaledHeight
             }
 
         val scaleFactor: Double
             get() {
-                //#if MC >= 1.16.5
-                //$$ return client.window.scaleFactor
+                return client.window.scaleFactor
                     //#if MC >= 1.21.6
                     //$$ .toDouble()
                     //#endif
-                //#else
-                return getScaledRes().scaleFactor.toDouble()
-                //#endif
             }
-
-        //#if MC == 1.8.9
-        private fun getScaledRes(): ScreenResolution {
-            val cached = CachedScaledResolution(
-                client.displayWidth,
-                client.displayHeight,
-                client.gameSettings.guiScale,
-                client.isUnicode
-            )
-
-            if (cached != cachedScaledRes) {
-                cachedScaledRes = cached
-                scaledRes = ScreenResolution(client)
-            }
-
-            return scaledRes!!
-        }
-        //#endif
     }
 
 
@@ -132,9 +73,9 @@ object KnitResolution {
     @JvmStatic
     val scaleFactor: Double get() = Scaled.scaleFactor
 
-    //#if MC >= 1.16.5
-    //$$ inline val window: net.minecraft.client.util.Window get() = client.window
-    //$$ inline val windowHandle: Long get() = client.window.handle
-    //#endif
+    @JvmStatic
+    val window: net.minecraft.client.util.Window get() = client.window
+
+    @JvmStatic
+    val windowHandle: Long get() = client.window.handle
 }
-//#endif

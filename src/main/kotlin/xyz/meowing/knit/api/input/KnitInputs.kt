@@ -1,18 +1,13 @@
 package xyz.meowing.knit.api.input
 
-//#if MC != 1.16.5
+import org.lwjgl.glfw.GLFW
+
+//#if MC < 1.21.9 || FABRIC
+import net.minecraft.client.util.InputUtil
+//#endif
 
 //#if MC >= 1.21.9 && FORGE-LIKE
 //$$ import com.mojang.blaze3d.platform.InputConstants
-//#endif
-
-//#if MC >= 1.16.5
-//#if MC < 1.21.9 || FABRIC
-//$$ import net.minecraft.client.util.InputUtil
-//#endif
-//$$ import org.lwjgl.glfw.GLFW
-//#else
-import net.minecraft.client.settings.GameSettings
 //#endif
 
 /**
@@ -47,20 +42,17 @@ object KnitInputs {
             //$$     InputUtil.Type.SCANCODE.createFromCode(scanCode)
             //$$ } else {
             //$$     InputUtil.Type.KEYSYM.createFromCode(code)
-            //$$ }).translationKey
+            //$$ }).localizedText.string
             //#endif
-        //#elseif MC >= 1.16.5
-        //$$ val keyName = GLFW.glfwGetKeyName(code, scanCode)
-        //$$ if (keyName != null) {
-        //$$     if (keyName.length == 1) return keyName.uppercase()
-        //$$     return keyName
-        //$$ }
-        //$$ val name = InputUtil.fromKeyCode(code, scanCode).translationKey.toString()
         //#else
-        val name = GameSettings.getKeyDisplayString(code) ?: return "Unknown"
+        val keyName = GLFW.glfwGetKeyName(code, scanCode)
+        if (keyName != null) {
+            if (keyName.length == 1) return keyName.uppercase()
+            return keyName
+        }
+        val name = InputUtil.fromKeyCode(code, scanCode).localizedText.string
         //#endif
         if (name.length == 1) return name.uppercase()
         return name
     }
 }
-//#endif

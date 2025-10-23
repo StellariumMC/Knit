@@ -1,16 +1,12 @@
 package xyz.meowing.knit
 
-//#if MC >= 1.20.1
-//$$ import net.minecraft.client.MinecraftClient
-//#else
-import net.minecraft.client.Minecraft
-//#endif
+import net.minecraft.client.MinecraftClient
+import xyz.meowing.knit.api.events.EventBus
 
 object Knit {
     @Deprecated("Use KnitClient.client")
-    //#if MC >= 1.20.1
-    //$$ val client: MinecraftClient = MinecraftClient.getInstance()
-    //#else
-    val client: Minecraft = Minecraft.getMinecraft()
-    //#endif
+    val client: MinecraftClient = MinecraftClient.getInstance()
+
+    @JvmStatic
+    val EventBus = EventBus()
 }

@@ -16,5 +16,8 @@
         "minecraft": "~${minor_mc_version}",
         "fabric-api": "*",
         "fabric-language-kotlin": "*"
-	}
+	},
+	"mixins": [
+		"mixins.knit.json"
+	]
 }

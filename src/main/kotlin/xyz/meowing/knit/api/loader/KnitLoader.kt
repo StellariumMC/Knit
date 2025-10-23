@@ -1,30 +1,18 @@
 package xyz.meowing.knit.api.loader
 
-//#if MC != 1.16.5
-
 import java.util.Optional
 
 //#if FABRIC
-//$$ import net.fabricmc.loader.api.FabricLoader
-//$$ import net.fabricmc.loader.api.ModContainer
+import net.fabricmc.loader.api.FabricLoader
+import net.fabricmc.loader.api.ModContainer
 //#elseif FORGE
-//#if MC >= 1.15.2
 //$$ import net.minecraftforge.fml.ModList
 //$$ import net.minecraftforge.fml.ModContainer
 //$$ import net.minecraftforge.fml.loading.FMLLoader
 //#else
-import net.minecraftforge.fml.common.Loader
-import net.minecraftforge.fml.common.ModContainer
-import net.minecraft.launchwrapper.Launch
-//#endif
-//#else
 //$$ import net.neoforged.fml.ModList
 //$$ import net.neoforged.fml.ModContainer
 //$$ import net.neoforged.fml.loading.FMLLoader
-//#endif
-
-//#if FORGE-LIKE && MC >= 1.15.2
-//$$ import java.util.stream.Collectors
 //#endif
 
 /**
@@ -56,7 +44,7 @@ object KnitLoader {
     val isDevelopment: Boolean
         get() {
             //#if FABRIC
-            //$$ return FabricLoader.getInstance().isDevelopmentEnvironment
+            return FabricLoader.getInstance().isDevelopmentEnvironment
             //#else
                 //#if MC >= 1.21.9
                     //#if FORGE
@@ -64,10 +52,8 @@ object KnitLoader {
                     //#else
                     //$$ return !FMLLoader.getCurrent().isProduction
                     //#endif
-                //#elseif MC >= 1.16.5
-                //$$ return !FMLLoader.isProduction()
                 //#else
-                return Launch.blackboard["fml.deobfuscatedEnvironment"] as Boolean
+                //$$ return !FMLLoader.isProduction()
                 //#endif
             //#endif
         }
@@ -77,52 +63,36 @@ object KnitLoader {
     val mods: Set<KnitModInfo>
         get() = buildSet {
             //#if FABRIC
-            //$$ FabricLoader.getInstance().allMods.map(KnitModInfo::wrap).forEach(::add)
+            FabricLoader.getInstance().allMods.map(KnitModInfo::wrap).forEach(::add)
             //#else
-                //#if MC >= 1.15.2
-                //$$ ModList.get().applyForEachModContainer(KnitModInfo::wrap).collect(Collectors.toSet()).forEach(::add)
-                //#else
-                Loader.instance().modList.map(KnitModInfo::wrap).forEach(::add)
-                //#endif
+            //$$ ModList.get().applyForEachModContainer(KnitModInfo::wrap).collect(java.util.stream.Collectors.toSet()).forEach(::add)
             //#endif
         }
 
     @JvmStatic
     fun isLoaded(id: String, version: String): Boolean {
         //#if FABRIC
-        //$$ return FabricLoader.getInstance().isModLoaded(id) && FabricLoader.getInstance().getModContainer(id).get().metadata.version.friendlyString == version
+        return FabricLoader.getInstance().isModLoaded(id) && FabricLoader.getInstance().getModContainer(id).get().metadata.version.friendlyString == version
         //#else
-            //#if MC >= 1.15.2
-            //$$ return ModList.get().isLoaded(id) && ModList.get().getModContainerById(id).get().getModInfo().getVersion().toString() == version
-            //#else
-            return Loader.isModLoaded(id) && Loader.instance().indexedModList[id]?.version == version
-            //#endif
+        //$$ return ModList.get().isLoaded(id) && ModList.get().getModContainerById(id).get().getModInfo().getVersion().toString() == version
         //#endif
     }
 
     @JvmStatic
     fun isLoaded(id: String): Boolean {
         //#if FABRIC
-        //$$ return FabricLoader.getInstance().isModLoaded(id)
+        return FabricLoader.getInstance().isModLoaded(id)
         //#else
-            //#if MC >= 1.15.2
-            //$$ return ModList.get().isLoaded(id)
-            //#else
-            return Loader.isModLoaded(id)
-            //#endif
+        //$$ return ModList.get().isLoaded(id)
         //#endif
     }
 
     @JvmStatic
     fun findContainer(id: String): Optional<out ModContainer> {
         //#if FABRIC
-        //$$ return FabricLoader.getInstance().getModContainer(id)
+        return FabricLoader.getInstance().getModContainer(id)
         //#else
-            //#if MC >= 1.15.2
-            //$$ return ModList.get().getModContainerById(id)
-            //#else
-            return Optional.ofNullable(Loader.instance().getIndexedModList()[id])
-            //#endif
+        //$$ return ModList.get().getModContainerById(id)
         //#endif
     }
 
@@ -141,5 +111,3 @@ object KnitLoader {
         return findContainerOrNull(id)?.let(KnitModInfo::wrap)
     }
 }
-
-//#endif
