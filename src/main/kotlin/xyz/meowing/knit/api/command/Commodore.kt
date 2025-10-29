@@ -41,7 +41,6 @@ open class Commodore(private val root: LiteralNode) {
         vararg name: String
     ) : this(LiteralNode(name[0], name.drop(1)))
 
-    //#if MC == 1.8.9
     /**
      * [CommandBase] instance for this command.
      * This handles executing a commodore command in Minecraft versions,
@@ -85,7 +84,6 @@ open class Commodore(private val root: LiteralNode) {
      * This is necessary due to the lack of proper error handling in legacy Minecraft versions.
      */
     lateinit var errorCallback: (problem: String, cause: LiteralNode) -> Unit
-    //#endif
 
     /**
      * DSL access to the root node for object-style definitions.
@@ -122,11 +120,7 @@ open class Commodore(private val root: LiteralNode) {
      * ```
      */
     fun register(
-        //#if MC != 1.8.9
-        //$$ dispatcher: CommandDispatcher<*>,
-        //#else
         errorCallback: (problem: String, cause: LiteralNode) -> Unit
-        //#endif
     ) {
         for (node in root.children) {
             node.build(root)
@@ -139,18 +133,14 @@ open class Commodore(private val root: LiteralNode) {
             aliasBuilder.redirect(rootCommand)
             dispatcher.register(aliasBuilder)
         }
-        //#if MC == 1.8.9
         ClientCommandHandler.instance.registerCommand(commandBase)
         this.errorCallback = errorCallback
-        //#endif
     }
 
-    //#if MC == 1.8.9
     companion object {
         /**
          * Dispatcher used to execute a command from [commandBase].
          */
         val dispatcher = CommandDispatcher<Any?>()
     }
-    //#endif
 }

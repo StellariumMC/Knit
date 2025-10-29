@@ -1,20 +1,9 @@
 package xyz.meowing.knit.api.text
 
-//#if MC != 1.16.5
-
 import xyz.meowing.knit.api.text.internal.ChainBuilder
 import xyz.meowing.knit.api.text.internal.TextBuilder
 import xyz.meowing.knit.api.text.core.FormattingCodes
-
-//#if MC >= 1.20.1
-    //#if FORGE-LIKE
-    //$$ import net.minecraft.network.chat.Component as VanillaText
-    //#else
-    //$$ import net.minecraft.text.Text as VanillaText
-    //#endif
-//#else
 import net.minecraft.util.IChatComponent
-//#endif
 
 object KnitText {
     @JvmStatic
@@ -25,11 +14,7 @@ object KnitText {
 
     @JvmStatic
     fun fromVanilla(
-        //#if MC >= 1.20.1
-        //$$ text: VanillaText
-        //#else
         text: IChatComponent
-        //#endif
     ): TextBuilder {
         val builder = TextBuilder("")
         builder.vanilla = text
@@ -102,13 +87,8 @@ fun String.asText(): TextBuilder = KnitText.literal(this)
 
 fun String.asFormattedText(): TextBuilder = KnitText.fromFormatted(this)
 
-//#if MC >= 1.20.1
-//$$ fun VanillaText.asKnit(): TextBuilder = KnitText.fromVanilla(this)
-//$$ fun VanillaText.toKnit(): TextBuilder = KnitText.fromVanilla(this)
-//#else
 fun IChatComponent.asKnit(): TextBuilder = KnitText.fromVanilla(this)
 fun IChatComponent.toKnit(): TextBuilder = KnitText.fromVanilla(this)
-//#endif
 
 fun text(content: String, builder: TextBuilder.() -> Unit = {}): TextBuilder {
     return KnitText.literal(content).apply(builder)
@@ -117,4 +97,3 @@ fun text(content: String, builder: TextBuilder.() -> Unit = {}): TextBuilder {
 fun buildText(builder: ChainBuilder.() -> Unit): TextBuilder {
     return KnitText.builder().apply(builder).build()
 }
-//#endif

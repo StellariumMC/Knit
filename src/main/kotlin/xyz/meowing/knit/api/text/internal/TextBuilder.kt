@@ -1,49 +1,19 @@
 package xyz.meowing.knit.api.text.internal
 
-//#if MC != 1.16.5
-
 import xyz.meowing.knit.api.text.core.ClickEvent
 import xyz.meowing.knit.api.text.core.HoverEvent
 import xyz.meowing.knit.api.text.core.ColorCodes
-
-//#if MC >= 1.20.1
-    //#if FORGE-LIKE
-    //$$ import net.minecraft.network.chat.Component as VanillaText
-    //#else
-    //$$ import net.minecraft.text.Text as VanillaText
-    //#endif
-//$$ import net.minecraft.text.ClickEvent as ModernClickEvent
-//$$ import net.minecraft.text.HoverEvent as ModernHoverEvent
-//$$ import net.minecraft.text.Style
-//$$ import net.minecraft.item.ItemStack
-//#else
+import xyz.meowing.knit.api.text.KnitText
 import net.minecraft.util.ChatComponentText
 import net.minecraft.util.IChatComponent
 import net.minecraft.event.ClickEvent as VanillaClickEvent
 import net.minecraft.event.HoverEvent as VanillaHoverEvent
-//#endif
-
-//#if MC >= 1.21.5
-    //#if FORGE-LIKE
-    //$$ import net.minecraft.network.chat.TextColor
-    //#else
-    //$$ import net.minecraft.text.TextColor
-    //#endif
-//#endif
-
 import java.net.URI
-import xyz.meowing.knit.api.text.KnitText
 
 class TextBuilder internal constructor(
     internal var text: String
 ) {
-    internal var vanilla:
-    //#if MC >= 1.20.1
-    //$$ VanillaText
-    //#else
-            IChatComponent
-            //#endif
-            ? = null
+    internal var vanilla: IChatComponent? = null
 
     private val siblings = mutableListOf<TextBuilder>()
 
@@ -201,66 +171,8 @@ class TextBuilder internal constructor(
         return this
     }
 
-    fun build():
-    //#if MC >= 1.20.1
-    //$$ VanillaText
-    //#else
-            IChatComponent
-    //#endif
-    {
+    fun build(): IChatComponent {
         vanilla?.let { return it }
-
-        //#if MC >= 1.20.1
-        //$$ val base = VanillaText.literal(text)
-        //$$ var style = base.style
-        //$$ color?.let {
-        //#if MC >= 1.21.5
-        //$$ style = style.withColor(TextColor.fromRgb(it))
-        //#else
-        //$$ style = style.withColor(it)
-        //#endif
-        //$$ }
-        //$$ bold?.let { style = style.withBold(it) }
-        //$$ italic?.let { style = style.withItalic(it) }
-        //$$ underlined?.let { style = style.withUnderline(it) }
-        //$$ strikethrough?.let { style = style.withStrikethrough(it) }
-        //$$ obfuscated?.let { style = style.withObfuscated(it) }
-        //$$ insertion?.let { style = style.withInsertion(it) }
-        //$$
-        //$$ clickEvent?.let {
-        //$$     style = style.withClickEvent(when (it) {
-        //#if MC >= 1.21.5
-        //$$ is ClickEvent.OpenUrl -> ModernClickEvent.OpenUrl(it.url)
-        //$$ is ClickEvent.RunCommand -> ModernClickEvent.RunCommand(it.command)
-        //$$ is ClickEvent.SuggestCommand -> ModernClickEvent.SuggestCommand(it.command)
-        //$$ is ClickEvent.CopyToClipboard -> ModernClickEvent.CopyToClipboard(it.text)
-        //$$ is ClickEvent.ChangePage -> ModernClickEvent.ChangePage(it.page)
-        //#else
-        //$$ is ClickEvent.OpenUrl -> ModernClickEvent(ModernClickEvent.Action.OPEN_URL, it.url.toString())
-        //$$ is ClickEvent.RunCommand -> ModernClickEvent(ModernClickEvent.Action.RUN_COMMAND, it.command)
-        //$$ is ClickEvent.SuggestCommand -> ModernClickEvent(ModernClickEvent.Action.SUGGEST_COMMAND, it.command)
-        //$$ is ClickEvent.CopyToClipboard -> ModernClickEvent(ModernClickEvent.Action.COPY_TO_CLIPBOARD, it.text)
-        //$$ is ClickEvent.ChangePage -> ModernClickEvent(ModernClickEvent.Action.CHANGE_PAGE, it.page.toString())
-        //#endif
-        //$$     })
-        //$$ }
-        //$$
-        //$$ hoverEvent?.let {
-        //$$     style = style.withHoverEvent(when (it) {
-        //#if MC >= 1.21.5
-        //$$ is HoverEvent.ShowText -> ModernHoverEvent.ShowText(it.text.build())
-        //$$ is HoverEvent.ShowItem -> ModernHoverEvent.ShowItem(it.stack)
-        //#else
-        //$$ is HoverEvent.ShowText -> ModernHoverEvent(ModernHoverEvent.Action.SHOW_TEXT, it.text.build())
-        //$$ is HoverEvent.ShowItem -> ModernHoverEvent(ModernHoverEvent.Action.SHOW_ITEM, ModernHoverEvent.ItemStackContent(it.stack))
-        //#endif
-        //$$     })
-        //$$ }
-        //$$
-        //$$ val result = base.copy().setStyle(style)
-        //$$ siblings.forEach { result.append(it.build()) }
-        //$$ return result
-        //#else
         val base = ChatComponentText(text)
         val style = base.chatStyle
 
@@ -295,33 +207,18 @@ class TextBuilder internal constructor(
         base.chatStyle = style
         siblings.forEach { base.appendSibling(it.build()) }
         return base
-        //#endif
     }
 
-    fun toVanilla():
-    //#if MC >= 1.20.1
-    //$$ VanillaText
-    //#else
-            IChatComponent
-    //#endif
-    {
+    fun toVanilla(): IChatComponent {
         return build()
     }
 
     fun string(): String {
-        //#if MC >= 1.20.1
-        //$$ return build().string
-        //#else
         return build().unformattedText
-        //#endif
     }
 
     fun formatted(): String {
-        //#if MC >= 1.20.1
-        //$$ return build().string
-        //#else
         return build().formattedText
-        //#endif
     }
 
     operator fun plus(other: TextBuilder): TextBuilder {
@@ -332,4 +229,3 @@ class TextBuilder internal constructor(
         return this.append(other)
     }
 }
-//#endif

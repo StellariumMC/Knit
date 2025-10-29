@@ -1,18 +1,7 @@
 package xyz.meowing.knit.api.text.internal
 
-//#if MC != 1.16.5
-
 import xyz.meowing.knit.api.text.KnitText
-
-//#if MC >= 1.20.1
-    //#if FORGE-LIKE
-    //$$ import net.minecraft.network.chat.Component as VanillaText
-    //#else
-    //$$ import net.minecraft.text.Text as VanillaText
-    //#endif
-//#else
 import net.minecraft.util.IChatComponent
-//#endif
 
 class ChainBuilder {
     private val parts = mutableListOf<TextBuilder>()
@@ -45,14 +34,7 @@ class ChainBuilder {
         }
         return result
     }
-
-    //#if MC >= 1.20.1
-    //$$ fun toVanilla(): VanillaText {
-    //#else
     fun toVanilla(): IChatComponent {
-    //#endif
         return build().toVanilla()
     }
 }
-
-//#endif

@@ -1,6 +1,5 @@
 package xyz.meowing.knit.api.input
 
-//#if MC != 1.16.5
 /**
  * @author: Deftu
  */
@@ -15,4 +14,3 @@ data class KnitKey(override val code: Int) : KnitInputCode {
         return true
     }
 }
-//#endif
