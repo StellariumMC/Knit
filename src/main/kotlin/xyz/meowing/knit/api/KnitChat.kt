@@ -7,26 +7,32 @@ import xyz.meowing.knit.api.text.internal.TextBuilder
 import kotlin.math.roundToInt
 
 object KnitChat {
+    @JvmStatic
     fun sendMessage(message: String) {
         player?.networkHandler?.sendChatMessage(message)
     }
 
+    @JvmStatic
     fun sendCommand(command: String) {
         player?.networkHandler?.sendChatCommand(command.removePrefix("/"))
     }
 
+    @JvmStatic
     fun fakeMessage(message: TextBuilder) {
         client.inGameHud.chatHud.addMessage(message.toVanilla())
     }
 
+    @JvmStatic
     fun fakeMessage(message: Text) {
         client.inGameHud.chatHud.addMessage(message)
     }
 
+    @JvmStatic
     fun fakeMessage(message: String) {
         fakeMessage(Text.literal(message))
     }
 
+    @JvmStatic
     fun getChatBreak(): String {
         val chatWidth = client.inGameHud?.chatHud?.width ?: return ""
         val textRenderer = client.textRenderer
@@ -36,6 +42,7 @@ object KnitChat {
         return "-".repeat(repeatCount)
     }
 
+    @JvmStatic
     fun getCenteredText(text: String): String {
         val chatWidth = client.inGameHud?.chatHud?.width ?: return text
         val textRenderer = client.textRenderer

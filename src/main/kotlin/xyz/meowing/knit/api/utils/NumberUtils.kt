@@ -60,6 +60,7 @@ object NumberUtils {
         return num * (suffixes.entries.find { it.value.lowercase() == suffix }?.key ?: 1L)
     }
 
+    @JvmStatic
     fun Number.abbreviate(): String {
         val num = this.toDouble().absoluteValue
         val sign = if (this.toDouble() < 0) "-" else ""
@@ -80,8 +81,10 @@ object NumberUtils {
         return sign + formatted + suffix
     }
 
+    @JvmStatic
     fun Number.formatWithCommas(): String = "%,.0f".format(Locale.US, this.toDouble())
 
+    @JvmStatic
     fun Long.toDuration(short: Boolean = false): String {
         val seconds = this / 1000
         val days = seconds / 86400
@@ -106,6 +109,7 @@ object NumberUtils {
         }.trimEnd()
     }
 
+    @JvmStatic
     fun Double.toFixed(precision: Int): String {
         if (this.isNaN()) return toString()
         val scale = 10.0.pow(precision).toInt()
@@ -119,6 +123,7 @@ object NumberUtils {
         }
     }
 
+    @JvmStatic
     fun Float.toFixed(precision: Int): String {
         val scale = 10.0.pow(precision).toInt()
         val rounded = (this * scale).roundToInt().toFloat() / scale
@@ -131,6 +136,7 @@ object NumberUtils {
         }
     }
 
+    @JvmStatic
     fun String.toFixed(precision: Int): String {
         val number = toDoubleOrNull() ?: return this
         val scale = 10.0.pow(precision).toInt()
@@ -144,6 +150,7 @@ object NumberUtils {
         }
     }
 
+    @JvmStatic
     fun Number.addSuffix(): String {
         val long = this.toLong()
         if (long in 11..13) return "${this}th"
@@ -156,6 +163,7 @@ object NumberUtils {
         }
     }
 
+    @JvmStatic
     fun Number.toRoman(): String {
         val int = this.toInt()
         require(int > 0) { "$this must be positive!" }
@@ -163,10 +171,12 @@ object NumberUtils {
         return if (int == l) romanSymbols[int]!! else romanSymbols[l] + (int - l).toRoman()
     }
 
+    @JvmStatic
     fun Number.clamp(min: Number, max: Number): Double {
         return this.toDouble().coerceIn(min.toDouble(), max.toDouble())
     }
 
+    @JvmStatic
     fun Number.percentage(total: Number): Double {
         return if (total.toDouble() == 0.0) 0.0 else (this.toDouble() / total.toDouble()) * 100
     }
