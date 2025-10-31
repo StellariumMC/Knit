@@ -43,6 +43,9 @@ import net.minecraft.client.util.ObjectAllocator;
 //$$ import net.minecraft.client.gl.PostEffectProcessor;
 //#endif
 
+/**
+ * Adapted from Fabric API's Implementation.
+ */
 @Mixin(WorldRenderer.class)
 public abstract class MixinWorldRenderer implements WorldRendererAccess {
     @Shadow
