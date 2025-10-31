@@ -168,7 +168,6 @@ object TimeScheduler {
         }
     }
 
-    @ApiStatus.Internal
     interface Handle {
         val isCancelled: Boolean
         fun cancel()
