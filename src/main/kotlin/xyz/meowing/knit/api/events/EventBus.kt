@@ -29,6 +29,7 @@ open class EventBus(private val threadSafe: Boolean = true) {
         return registerInternal(eventClass, priority, add, callback)
     }
 
+    @JvmOverloads
     fun <T : Event> post(event: T, checkHierarchy: Boolean = false): Boolean {
         if (checkHierarchy) return postWithHierarchy(event)
 
