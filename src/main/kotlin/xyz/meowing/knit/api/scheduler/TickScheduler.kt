@@ -1,22 +1,16 @@
+@file:Suppress("UNUSED")
+
 package xyz.meowing.knit.api.scheduler
 
 import org.apache.logging.log4j.LogManager
-import xyz.meowing.knit.Knit.EventBus
-import xyz.meowing.knit.internal.events.TickEvent
 import java.util.*
 
+/**
+ * Handles your needs for Tick scheduling for you!
+ * - You need to manually call Client.onTick and Server.onTick
+ */
 object TickScheduler {
     private val logger = LogManager.getLogger(TickScheduler::class.java)
-
-    init {
-        EventBus.register<TickEvent.Client.End> {
-            Client.onTick()
-        }
-
-        EventBus.register<TickEvent.Server.End> {
-            Server.onTick()
-        }
-    }
 
     interface Handle {
         val isCancelled: Boolean
@@ -62,7 +56,7 @@ object TickScheduler {
             }
         }
 
-        internal fun onTick() {
+        fun onTick() {
             currentTick++
             processPendingTasks()
             processTimers()
@@ -121,12 +115,14 @@ object TickScheduler {
             queue.offer(task.copy(executeTick = currentTick + task.interval))
         }
 
-        private fun safeRunnable(action: () -> Unit): Runnable = Runnable {
-            try {
-                action()
-            } catch (e: Exception) {
-                logger.error("Caught error while trying to run action: $e")
-            }
+        private fun safeRunnable(action: () -> Unit) {
+            Runnable {
+                try {
+                    action()
+                } catch (e: Exception) {
+                    logger.error("Caught error while trying to run action: $e")
+                }
+            }.run()
         }
 
         private fun rescheduleDynamicTask(task: Task) {
