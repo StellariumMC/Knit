@@ -21,13 +21,15 @@ A utility library for Minecraft modding that provides cross-version compatibilit
 ![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.5-forge?label=Knit%201.21.5%20Forge)
 ![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.5-neoforge?label=Knit%201.21.5%20NeoForge)
 
-![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.7-fabric?label=Knit%201.21.7%20Fabric)
-![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.7-forge?label=Knit%201.21.7%20Forge)
-![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.7-neoforge?label=Knit%201.21.7%20NeoForge)
+![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.8-fabric?label=Knit%201.21.8%20Fabric)
+![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.8-forge?label=Knit%201.21.8%20Forge)
+![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.8-neoforge?label=Knit%201.21.8%20NeoForge)
 
 ![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.9-fabric?label=Knit%201.21.9%20Fabric)
 ![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.9-forge?label=Knit%201.21.9%20Forge)
 ![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.9-neoforge?label=Knit%201.21.9%20NeoForge)
+
+![Maven Central Version](https://img.shields.io/maven-central/v/xyz.meowing/knit-1.21.10-fabric?label=Knit%201.21.10%20Fabric)
 
 ## Installation
 
