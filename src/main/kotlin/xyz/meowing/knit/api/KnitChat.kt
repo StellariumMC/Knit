@@ -19,12 +19,12 @@ object KnitChat {
 
     @JvmStatic
     fun fakeMessage(message: TextBuilder) {
-        client.inGameHud.chatHud.addMessage(message.toVanilla())
+        client.inGameHud?.chatHud?.addMessage(message.toVanilla())
     }
 
     @JvmStatic
     fun fakeMessage(message: Text) {
-        client.inGameHud.chatHud.addMessage(message)
+        client.inGameHud?.chatHud?.addMessage(message)
     }
 
     @JvmStatic
