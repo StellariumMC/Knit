@@ -34,7 +34,13 @@ object KnitChat {
 
     @JvmStatic
     fun getChatBreak(): String {
-        val chatWidth = client.inGameHud?.chatHud?.width ?: return ""
+        //#if MC == 1.21.11
+        val chatWidth = net.minecraft.client.gui.hud.ChatHud.getWidth(client.options.chatWidth.value)
+        //#elseif FABRIC
+        //$$ val chatWidth = client.inGameHud?.chatHud?.width ?: return ""
+        //#else
+        //$$ val chatWidth = client.gui?.chat?.width ?: return ""
+        //#endif
         val textRenderer = client.textRenderer
         val dashWidth = textRenderer.getWidth("-")
 
@@ -44,7 +50,13 @@ object KnitChat {
 
     @JvmStatic
     fun getCenteredText(text: String): String {
-        val chatWidth = client.inGameHud?.chatHud?.width ?: return text
+        //#if MC == 1.21.11
+        val chatWidth = net.minecraft.client.gui.hud.ChatHud.getWidth(client.options.chatWidth.value)
+        //#elseif FABRIC
+        //$$ val chatWidth = client.inGameHud?.chatHud?.width ?: return text
+        //#else
+        //$$ val chatWidth = client.gui?.chat?.width ?: return text
+        //#endif
         val textRenderer = client.textRenderer
         val textWidth = textRenderer.getWidth(text)
         if (textWidth >= chatWidth) return text
