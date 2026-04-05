@@ -29,6 +29,7 @@ import xyz.meowing.knit.api.text.KnitText
 
 @Suppress("UNUSED")
 abstract class KnitScreen(screenName: String = "Knit-Screen") : Screen(KnitText.literal(screenName).toVanilla()) {
+    private var initialized = false
     private var lastX: Double = -1.0
     private var lastY: Double = -1.0
 
@@ -55,6 +56,8 @@ abstract class KnitScreen(screenName: String = "Knit-Screen") : Screen(KnitText.
     open fun onKeyType(typedChar: Char, keyCode: Int, scanCode: Int): Boolean = false
 
     final override fun init() {
+        if (initialized) onResizeGui()
+        initialized = true
         onInitGui()
         super.init()
     }
@@ -165,12 +168,4 @@ abstract class KnitScreen(screenName: String = "Knit-Screen") : Screen(KnitText.
     }
     //#endif
 
-    //#if FORGE-LIKE
-    //$$ override fun resize(client: Minecraft, width: Int, height: Int) {
-    //#else
-    override fun resize(client: MinecraftClient?, width: Int, height: Int) {
-    //#endif
-        onResizeGui()
-        super.resize(client, width, height)
-    }
 }
